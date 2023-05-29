@@ -24,15 +24,9 @@ static inline int cerinta_1(struct nod *p)
 static inline void swap(struct nod *ptr1, struct nod *ptr2)
 {
     struct nod tmp;
-    tmp = *ptr1;
-    *ptr1 = *ptr2;
-    *ptr2 = tmp;
-    tmp.next = (*ptr1).next;
-    (*ptr1).next = (*ptr2).next;
-    (*ptr2).next = tmp.next;\
-    tmp.prev = (*ptr1).prev;
-    (*ptr1).prev = (*ptr2).prev;
-    (*ptr2).prev = tmp.prev;
+    memcpy(&tmp, (char*)ptr1 + 2 * sizeof(struct nod*), sizeof(struct nod) - 2 * sizeof(struct nod *));
+    memcpy((char*)ptr1 + 2 * sizeof(struct nod*), (char*)ptr2 + 2 * sizeof(struct nod*), sizeof(struct nod) - 2 * sizeof(struct nod *));
+    memcpy((char*)ptr2 + 2 * sizeof(struct nod*), &tmp, sizeof(struct nod) - 2 * sizeof(struct nod *));
 }
 
 static void sort(struct nod **ptr)
